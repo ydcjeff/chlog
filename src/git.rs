@@ -47,7 +47,7 @@ pub fn get_commits(from_to: &str, commit_path: &str) -> Vec<String> {
   ])
 }
 
-pub fn get_tags_dates(commit_path: &str, count: &str) -> Vec<String> {
+pub fn get_tags_dates(commit_path: &str, count: usize) -> Vec<String> {
   let format = format!("--format=%ad%S{}", CHLOG_END);
   let mut args = vec![
     "--date=short",
@@ -59,9 +59,9 @@ pub fn get_tags_dates(commit_path: &str, count: &str) -> Vec<String> {
   ];
 
   let number: String;
-  if count != "0" {
+  if count != 0 {
     // -n needs to appear before --no-walk
-    number = (count.parse::<i32>().unwrap() + 1).to_string();
+    number = (count + 1).to_string();
     args.splice(0..0, ["-n", &number]);
   }
 
