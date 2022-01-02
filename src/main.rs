@@ -22,7 +22,8 @@ fn main() {
 }
 
 fn show_help() {
-  print!("
+  print!(
+    "
   chlog
 
   Description:
@@ -50,7 +51,8 @@ fn show_help() {
     -V, --version         Show version number
 
   Source: https://github.com/ydcjeff/chlog
-")
+"
+  )
 }
 
 fn show_version() {

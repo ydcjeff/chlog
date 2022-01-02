@@ -1,7 +1,7 @@
 use std::fs;
 use std::io;
-use std::process;
 use std::path::PathBuf;
+use std::process;
 
 use crate::git;
 use crate::utils;
@@ -57,15 +57,15 @@ pub fn generate(args: (&str, &str, &str, &str)) {
 }
 
 fn stringify_commits(commits: Vec<String>, url: &str) -> String {
-  let mut breaking  = String::new();
-  let mut fix       = String::new();
-  let mut deps      = String::new();
+  let mut breaking = String::new();
+  let mut fix = String::new();
+  let mut deps = String::new();
   let mut deprecate = String::new();
-  let mut dx        = String::new();
-  let mut docs      = String::new();
-  let mut feat      = String::new();
-  let mut perf      = String::new();
-  let mut refactor  = String::new();
+  let mut dx = String::new();
+  let mut docs = String::new();
+  let mut feat = String::new();
+  let mut perf = String::new();
+  let mut refactor = String::new();
   let mut commits_list = String::new();
 
   for commit in commits {
@@ -95,16 +95,16 @@ fn stringify_commits(commits: Vec<String>, url: &str) -> String {
     template.push_str("\n\n");
 
     match commit_type {
-      "breaking" => { breaking.push_str(&template) }
-      "fix" => { fix.push_str(&template) }
-      "deps" => { deps.push_str(&template) }
-      "deprecate" => { deprecate.push_str(&template) }
-      "dx" => { dx.push_str(&template) }
-      "docs" => { docs.push_str(&template) }
-      "feat" => { feat.push_str(&template) }
-      "perf" => { perf.push_str(&template) }
-      "refactor" => { refactor.push_str(&template) }
-      _ => ()
+      "breaking" => breaking.push_str(&template),
+      "fix" => fix.push_str(&template),
+      "deps" => deps.push_str(&template),
+      "deprecate" => deprecate.push_str(&template),
+      "dx" => dx.push_str(&template),
+      "docs" => docs.push_str(&template),
+      "feat" => feat.push_str(&template),
+      "perf" => perf.push_str(&template),
+      "refactor" => refactor.push_str(&template),
+      _ => (),
     }
   }
 
@@ -144,7 +144,7 @@ fn write(prepend: &str, output: &str, to_write: &str) -> io::Result<()> {
     print!("Generating changelog and prepending to {:?}...", prepend);
   } else {
     print!("{}", to_write);
-    return Ok(())
+    return Ok(());
   }
 
   fs::write(path, contents)?;
