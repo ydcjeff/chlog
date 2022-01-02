@@ -20,7 +20,7 @@ pub fn generate(args: (&str, &str, &str, &str)) {
       break;
     }
     let (date, current_tag) = tag_date.split_at(10); // split YYYY-MM-DD date format
-    let mut from_to = format!("{}", current_tag); // all commits
+    let mut from_to = current_tag.to_string(); // all commits
 
     // commits between 2 tags
     if i + 1 < len {
@@ -78,15 +78,15 @@ fn stringify_commits(commits: Vec<String>, url: &str) -> String {
       url = url,
     );
 
-    if commit_scope != "" {
+    if !commit_scope.is_empty() {
       template.push_str(&format!("**{scope}** ", scope = commit_scope))
     }
 
     template.push_str(commit_title);
 
-    if commit_body != "" {
+    if !commit_body.is_empty() {
       let body = utils::indent(commit_body);
-      if body != "" {
+      if !body.is_empty() {
         template.push_str(&format!("\n\n{body}", body = body))
       }
     }
@@ -109,7 +109,7 @@ fn stringify_commits(commits: Vec<String>, url: &str) -> String {
   }
 
   let mut add_if = |left: &str, right: String| {
-    if right != "" {
+    if !right.is_empty() {
       commits_list.push_str(&(left.to_owned() + &right))
     }
   };
@@ -132,11 +132,11 @@ fn write(prepend: &str, output: &str, to_write: &str) -> io::Result<()> {
   let path: PathBuf;
   let contents: String;
 
-  if output != "" {
+  if !output.is_empty() {
     path = fs::canonicalize(output)?;
     contents = placeholder.to_owned() + to_write;
     print!("Generating changelog to {:?}...", path);
-  } else if prepend != "" {
+  } else if !prepend.is_empty() {
     path = fs::canonicalize(prepend)?;
     let content = fs::read_to_string(path.clone())?;
     let content: Vec<&str> = content.splitn(2, placeholder).collect();

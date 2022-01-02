@@ -1,0 +1,99 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        toolchain: [stable, beta]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install rustup - ${{ runner.os }}
+        run: |
+          rustup set profile default
+          rustup toolchain install ${{ matrix.toolchain }}
+          rustup update
+          rustup default ${{ matrix.toolchain }}
+
+      - name: Log versions
+        run: |
+          rustc --version
+          cargo --version
+          rustup --version
+
+      - run: cargo check --release
+      - run: cargo clippy --release -- -D warnings
+      - run: cargo b --release
+      - run: cargo t --release
+      - run: cargo fmt -- --check
+
+  build-binary:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            name: chlog
+            ext: tar.gz
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            name: chlog
+            ext: tar.gz
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            name: chlog
+            ext: tar.gz
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            name: chlog.exe
+            ext: zip
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          rustup set profile default
+          rustup toolchain install stable --target ${{ matrix.target }}
+          rustup update
+          rustup default stable
+
+      - name: Log versions
+        run: |
+          rustc --version
+          cargo --version
+          rustup --version
+
+      - run: cargo b --release --target ${{ matrix.target }}
+      - name: Create archive
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            tar.exe -a -c -f chlog-${{ matrix.target }}.${{ matrix.ext }} target/${{ matrix.target }}/release/${{ matrix.name }}
+          else
+            tar -czvf chlog-${{ matrix.target }}.${{ matrix.ext }} target/${{ matrix.target }}/release/${{ matrix.name }}
+          fi
+
+      - uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          generate_release_notes: false
+          fail_on_unmatched_files: false
+          body: Please refer to [CHANGELOG.md](https://github.com/ydcjeff/chlog/blob/main/CHANGELOG.md) for details.
+          files: |
+            chlog-${{ matrix.target }}.${{ matrix.ext }}

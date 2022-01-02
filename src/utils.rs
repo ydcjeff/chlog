@@ -4,7 +4,7 @@ pub fn indent(s: &str) -> String {
   let mut result = String::new();
 
   for line in s.lines() {
-    if line == "" {
+    if line.is_empty() {
       result.push('\n')
     } else if !line.to_lowercase().starts_with("co-author") {
       result.push_str(&format!("  {}\n", line))
@@ -37,13 +37,13 @@ pub fn process_commit(commit: &str) -> (&str, &str, &str, &str, &str) {
     commit_type = "breaking"
   }
 
-  return (
+  (
     commit_hash,
     commit_type,
     commit_scope,
     commit_title,
     commit_body,
-  );
+  )
 }
 
 pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str) {
@@ -76,7 +76,7 @@ pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str) {
     }
   }
 
-  return (prepend, output, count, commit_path);
+  (prepend, output, count, commit_path)
 }
 
 #[cfg(test)]
