@@ -3,19 +3,14 @@ use crate::git;
 pub fn indent(s: &str) -> String {
   let mut result = String::new();
 
-  for (idx, line) in s.lines().enumerate() {
-    if idx > 0 {
+  for line in s.lines() {
+    if line == "" {
       result.push('\n')
+    } else if !line.to_lowercase().starts_with("co-author") {
+      result.push_str(&format!("  {}\n", line))
     }
-    if line != "" {
-      result.push_str("  ")
-    }
-    result.push_str(line)
   }
-  if s.ends_with('\n') {
-    result.push('\n')
-  }
-  result
+  result.trim_end().to_owned()
 }
 
 pub fn process_commit(commit: &str) -> (&str, &str, &str, &str, &str) {
@@ -107,8 +102,7 @@ List items
 
   - one
   - two
-  - three
-";
+  - three";
 
     assert_eq!(indent(string), expected);
 
@@ -119,7 +113,7 @@ List items
 
     assert_eq!(
       indent("First line.\n\n\nSecond line.\n"),
-      "  First line.\n\n\n  Second line.\n"
+      "  First line.\n\n\n  Second line."
     );
   }
 
