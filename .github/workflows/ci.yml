@@ -68,7 +68,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        run: |
+      - run: |
           rustup set profile default
           rustup toolchain install ${{ matrix.toolchain }} --target ${{ matrix.target }}
           rustup update
@@ -90,11 +90,11 @@ jobs:
             tar -czvf chlog-${{ matrix.target }}.${{ matrix.ext }} target/${{ matrix.target }}/release/${{ matrix.output }}
           fi
 
-        - uses: softprops/action-gh-release@v1
-          if: startsWith(github.ref, 'refs/tags/')
-          with:
-            generate_release_notes: false
-            fail_on_unmatched_files: false
-            body: Please refer to [CHANGELOG.md](https://github.com/ydcjeff/chlog/blob/main/CHANGELOG.md) for details.
-            files: |
-              chlog-${{ matrix.target }}.${{ matrix.ext }}
+      - uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          generate_release_notes: false
+          fail_on_unmatched_files: false
+          body: Please refer to [CHANGELOG.md](https://github.com/ydcjeff/chlog/blob/main/CHANGELOG.md) for details.
+          files: |
+            chlog-${{ matrix.target }}.${{ matrix.ext }}
