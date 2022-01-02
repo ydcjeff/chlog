@@ -11,7 +11,7 @@ pub fn git(args: &[&str]) -> String {
     .args(args)
     .stderr(Stdio::inherit())
     .output()
-    .expect(&format!("failed to execute git {}.", args.join(" ")));
+    .unwrap_or_else(|_| panic!("failed to execute git {}.", args.join(" ")));
 
   if !out.status.success() {
     exit(1)
@@ -22,7 +22,7 @@ pub fn git(args: &[&str]) -> String {
 
 pub fn git_log(args: &[&str]) -> Vec<String> {
   let mut log_args = vec!["log"];
-  log_args.extend_from_slice(&args);
+  log_args.extend_from_slice(args);
   let out = git(&log_args);
 
   out

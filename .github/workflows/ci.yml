@@ -2,7 +2,7 @@ name: ci
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 concurrency:
@@ -22,16 +22,21 @@ jobs:
         toolchain: [stable, beta, nightly]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Install rustup in ${{ runner.os }}
-      # run: curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain ${{ matrix.toolchain }} --profile default
-      run: |
-        rustup set profile default
-        rustup toolchain install ${{ matrix.toolchain }}
-        rustup update
+      - uses: actions/checkout@v2
+      - name: Install rustup - ${{ runner.os }}
+        run: |
+          cargo uninstall rustfmt
+          rustup set profile default
+          rustup toolchain install ${{ matrix.toolchain }}
+          rustup update
 
-    - run: cargo check --release
-    - run: cargo clippy --release
-    - run: cargo b --release
-    - run: cargo t --release
-    - run: cargo fmt -- --check
+      - name: Log versions
+        run: |
+          rustc --version
+          cargo --version
+
+      - run: cargo check --release
+      - run: cargo clippy --release -- -D warnings
+      - run: cargo b --release
+      - run: cargo t --release
+      - run: cargo fmt -- --check
