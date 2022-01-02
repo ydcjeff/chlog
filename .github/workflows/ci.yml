@@ -85,7 +85,7 @@ jobs:
         shell: bash
         run: |
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            zip.exe chlog-${{ matrix.target }}.${{ matrix.ext }} target/${{ matrix.target }}/release/${{ matrix.output }}
+            tar.exe -a -c -f chlog-${{ matrix.target }}.${{ matrix.ext }} target/${{ matrix.target }}/release/${{ matrix.output }}
           else
             tar -czvf chlog-${{ matrix.target }}.${{ matrix.ext }} target/${{ matrix.target }}/release/${{ matrix.output }}
           fi
