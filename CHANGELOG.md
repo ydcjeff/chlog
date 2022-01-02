@@ -1,7 +1,7 @@
 # chlog's Changelog
 
 <!-- CHLOG_SPLIT_MARKER -->
-## [v0.1.0](https://github.com/ydcjeff/chlog/compare/b6a0547...v0.1.0)
+## [v0.1.0](https://github.com/ydcjeff/chlog/compare/46a3b87...v0.1.0)
 
 _2022-01-03_
 
