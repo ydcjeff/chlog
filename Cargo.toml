@@ -1,0 +1,14 @@
+[package]
+name = "chlog"
+version = "0.1.0"
+edition = "2021"
+authors = ["Jeff Yang"]
+description = "Universal changelog generator using conventional commit+ with monorepo support."
+repository = "https://github.com/ydcjeff/chlog"
+license = "MIT"
+keywords = ["changelog generator", "chlog", "git"]
+categories = ["command-line-utilities"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
