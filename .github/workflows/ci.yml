@@ -2,26 +2,36 @@ name: ci
 
 on:
   push:
-  pull_request:
     branches: [ main ]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
+  cancel-in-progress: true
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        fail-fast: false
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        toolchain: [stable, beta, nightly]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+    - name: Install rustup in ${{ runner.os }}
+      # run: curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain ${{ matrix.toolchain }} --profile default
+      run: |
+        rustup set profile default
+        rustup toolchain ${{ matrix.toolchain }}
+        rustup update
 
-  rustfmt:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
+    - run: cargo check --release
+    - run: cargo clippy --release
+    - run: cargo b --release
+    - run: cargo t --release
     - run: cargo fmt -- --check
