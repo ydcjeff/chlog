@@ -36,12 +36,13 @@ fn show_help() {
   Example:
     $ chlog -o CHANGELOG.md
     $ chlog -p CHANGELOG.md
-    $ chlog -p CHANGELOG.md -c 2
-    $ chlog -p CHANGELOG.md -c 2 --commit-path crates/scope-pkg
+    $ chlog -p CHANGELOG.md -r 2
+    $ chlog -p CHANGELOG.md -r 2 --commit-path crates/scope-pkg
 
   Options:
-    -c  <number>          Number of releases to generate the changelog
+    -r  <number>          Number of releases to generate the changelog
                           If 0, the whole changelog will be generated
+                          (i.e. first release)
     -o  <file>            File to write the generated changelog
     -p  <file>            File to prepend the generated changelog
     --commit-path <path>  Generate a changelog scoped to a specific directory

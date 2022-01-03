@@ -64,7 +64,7 @@ pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str) {
         "-o" => {
           output = args.next().unwrap();
         }
-        "-c" => {
+        "-r" => {
           count = args.next().unwrap();
         }
         "--commit-path" => {
@@ -172,7 +172,7 @@ List items
     assert_eq!(parse_args(&args), ("prepend.md", "output.md", "1", "."));
 
     let args =
-      ["-p", "prepend.md", "-o", "output.md", "-c", "2"].map(String::from);
+      ["-p", "prepend.md", "-o", "output.md", "-r", "2"].map(String::from);
     assert_eq!(parse_args(&args), ("prepend.md", "output.md", "2", "."));
 
     let args = [
@@ -180,7 +180,7 @@ List items
       "prepend.md",
       "-o",
       "output.md",
-      "-c",
+      "-r",
       "2",
       "--commit-path",
       "test",
