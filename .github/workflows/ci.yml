@@ -20,33 +20,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         toolchain: [stable, beta]
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install rustup - ${{ runner.os }}
-        run: |
-          rustup set profile default
-          rustup toolchain install ${{ matrix.toolchain }}
-          rustup update
-          rustup default ${{ matrix.toolchain }}
-
-      - name: Log versions
-        run: |
-          rustc --version
-          cargo --version
-          rustup --version
-
-      - run: cargo check --release
-      - run: cargo clippy --release -- -D warnings
-      - run: cargo b --release
-      - run: cargo t --release
-      - run: cargo fmt -- --check
-
-  build-binary:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -67,11 +40,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: |
+      - name: Install rustup - ${{ runner.os }}
+        run: |
           rustup set profile default
-          rustup toolchain install stable --target ${{ matrix.target }}
+          rustup toolchain install ${{ matrix.toolchain }} --target ${{ matrix.target }}
           rustup update
-          rustup default stable
+          rustup default ${{ matrix.toolchain }}
 
       - name: Log versions
         run: |
@@ -79,7 +53,11 @@ jobs:
           cargo --version
           rustup --version
 
+      - run: cargo check --release
+      - run: cargo clippy --release -- -D warnings
       - run: cargo b --release --target ${{ matrix.target }}
+      - run: cargo t --release
+      - run: cargo fmt -- --check
       - name: Create archive
         shell: bash
         run: |
@@ -90,7 +68,9 @@ jobs:
           fi
 
       - uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+        if: |
+          startsWith(github.ref, 'refs/tags/') &&
+          matrix.toolchain == "stable"
         with:
           generate_release_notes: false
           fail_on_unmatched_files: false
@@ -100,3 +80,10 @@ jobs:
             for details.
           files: |
             chlog-${{ matrix.target }}.${{ matrix.ext }}
+
+      - name: Publish to crates.io
+        if: |
+          startsWith(github.ref, 'refs/tags/') &&
+          matrix.toolchain == "stable" &&
+          matrix.os == "ubuntu-latest"
+        run: cargo publish --token ${{ CARGO_REGISTRY_TOKEN }}
