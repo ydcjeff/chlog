@@ -2,6 +2,34 @@
 
 <!-- CHLOG_SPLIT_MARKER -->
 
+## [v0.2.0](https://github.com/ydcjeff/chlog/compare/v0.1.0...v0.2.0)
+
+_2022-01-03_
+
+### Bug Fixes
+
+- [`dbb1aa4`](https://github.com/ydcjeff/chlog/commit/dbb1aa4) do not
+  canonicalize the output file
+
+- [`a04f0de`](https://github.com/ydcjeff/chlog/commit/a04f0de) get today date
+  from the system for release date
+
+### Features
+
+- [`189dbb3`](https://github.com/ydcjeff/chlog/commit/189dbb3) add -t option for
+  next release tag name
+
+- [`ac2a90e`](https://github.com/ydcjeff/chlog/commit/ac2a90e) exit on unknown
+  options
+
+- [`e8d8d29`](https://github.com/ydcjeff/chlog/commit/e8d8d29) generate
+  changelog for unreleased
+
+### Refactoring
+
+- [`463625f`](https://github.com/ydcjeff/chlog/commit/463625f) change -c option
+  to -r to align with name "releases"
+
 ## [v0.1.0](https://github.com/ydcjeff/chlog/compare/46a3b87...v0.1.0)
 
 _2022-01-03_
