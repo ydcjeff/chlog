@@ -37,9 +37,11 @@ fn show_help() {
     $ chlog -o CHANGELOG.md
     $ chlog -p CHANGELOG.md
     $ chlog -p CHANGELOG.md -r 2
+    $ chlog -p CHANGELOG.md -t v1.0.0
     $ chlog -p CHANGELOG.md -r 2 --commit-path crates/scope-pkg
 
   Options:
+    -t  <string>          Tag name for the next release
     -r  <number>          Number of releases to generate the changelog
                           If 0, the whole changelog will be generated
                           (i.e. first release)

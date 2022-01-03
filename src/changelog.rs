@@ -7,8 +7,8 @@ use std::process;
 use crate::git;
 use crate::utils;
 
-pub fn generate(args: (&str, &str, &str, &str)) {
-  let (prepend, output, count, commit_path) = args;
+pub fn generate(args: (&str, &str, &str, &str, &str)) {
+  let (prepend, output, count, commit_path, tag) = args;
 
   let url = git::get_remote_url();
   let mut releases = String::new();
@@ -19,9 +19,19 @@ pub fn generate(args: (&str, &str, &str, &str)) {
     if i + 1 == len {
       break;
     }
-    let (date, current_tag) = tag_date.split_at(10); // split YYYY-MM-DD date format
+    let (date, mut current_tag) = tag_date.split_at(10); // split YYYY-MM-DD date format
     let prev_tag = tags_dates[i + 1].split_at(10).1;
-    let from_to = format!("{from}...{to}", from = prev_tag, to = current_tag);
+    let mut from_to =
+      format!("{from}...{to}", from = prev_tag, to = current_tag);
+
+    let mut commits = git::get_commits(&from_to, commit_path);
+    commits.sort_unstable();
+
+    // Next release tag name, only apply to HEAD
+    if i == 0 && !tag.is_empty() {
+      current_tag = tag;
+      from_to = format!("{from}...{to}", from = prev_tag, to = current_tag);
+    }
 
     releases.push_str(&format!(
       "## [{tag}]({url}/compare/{from_to})\n\n_{date}_\n\n",
@@ -30,9 +40,6 @@ pub fn generate(args: (&str, &str, &str, &str)) {
       from_to = from_to,
       date = date,
     ));
-
-    let mut commits = git::get_commits(&from_to, commit_path);
-    commits.sort_unstable();
 
     releases.push_str(&stringify_commits(commits, &url));
 

@@ -47,11 +47,12 @@ pub fn process_commit(commit: &str) -> (&str, &str, &str, &str, &str) {
   )
 }
 
-pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str) {
+pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str, &str) {
   let mut prepend = "";
   let mut output = "";
   let mut count = "1";
   let mut commit_path = ".";
+  let mut tag = "";
 
   let mut args = args.iter();
 
@@ -68,6 +69,9 @@ pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str) {
         "-r" => {
           count = args.next().unwrap();
         }
+        "-t" => {
+          tag = args.next().unwrap();
+        }
         "--commit-path" => {
           commit_path = args.next().unwrap();
         }
@@ -80,7 +84,7 @@ pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str) {
     }
   }
 
-  (prepend, output, count, commit_path)
+  (prepend, output, count, commit_path, tag)
 }
 
 #[cfg(test)]
@@ -173,11 +177,11 @@ List items
   #[test]
   fn test_parse_args() {
     let args = ["-p", "prepend.md", "-o", "output.md"].map(String::from);
-    assert_eq!(parse_args(&args), ("prepend.md", "output.md", "1", "."));
+    assert_eq!(parse_args(&args), ("prepend.md", "output.md", "1", ".", ""));
 
     let args =
       ["-p", "prepend.md", "-o", "output.md", "-r", "2"].map(String::from);
-    assert_eq!(parse_args(&args), ("prepend.md", "output.md", "2", "."));
+    assert_eq!(parse_args(&args), ("prepend.md", "output.md", "2", ".", ""));
 
     let args = [
       "-p",
@@ -190,6 +194,27 @@ List items
       "test",
     ]
     .map(String::from);
-    assert_eq!(parse_args(&args), ("prepend.md", "output.md", "2", "test"));
+    assert_eq!(
+      parse_args(&args),
+      ("prepend.md", "output.md", "2", "test", "")
+    );
+
+    let args = [
+      "-p",
+      "prepend.md",
+      "-o",
+      "output.md",
+      "-r",
+      "2",
+      "--commit-path",
+      "test",
+      "-t",
+      "v1.0.0",
+    ]
+    .map(String::from);
+    assert_eq!(
+      parse_args(&args),
+      ("prepend.md", "output.md", "2", "test", "v1.0.0")
+    );
   }
 }
