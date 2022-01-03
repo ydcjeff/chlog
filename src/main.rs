@@ -35,11 +35,10 @@ fn show_help() {
     $ chlog [options]
 
   Example:
-    $ chlog -o CHANGELOG.md
-    $ chlog -p CHANGELOG.md
-    $ chlog -p CHANGELOG.md -r 2
+    $ chlog -o CHANGELOG.md -t v1.0.0
     $ chlog -p CHANGELOG.md -t v1.0.0
-    $ chlog -p CHANGELOG.md -r 2 --commit-path crates/scope-pkg
+    $ chlog -p CHANGELOG.md -t v1.0.0 -r 2
+    $ chlog -p CHANGELOG.md -t v1.0.0 -r 2 --commit-path crates/scope-pkg
 
   Options:
     -t  <string>          Tag name for the next release
@@ -60,5 +59,5 @@ fn show_help() {
 }
 
 fn show_version() {
-  println!("chlog 0.1.0");
+  println!("chlog 0.2.0");
 }
