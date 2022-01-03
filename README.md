@@ -22,7 +22,7 @@ extra commit types. The supported commit types are:
 
 - `fix` -> Bug Fixes
 - `deps` -> Dependency Updates
-- `deprecate` -> Deprecations (Deprecations are important for users, putting
+- `deprecate` -> Deprecations (Deprecations are important for users as putting
   under refactor is hard to find)
 - `dx` -> Developer Experience
 - `docs` -> Documentation
