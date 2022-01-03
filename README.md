@@ -15,7 +15,7 @@
 > Universal changelog generator using conventional commit+ with monorepo
 > support.
 
-[![demo](https://github.com/ydcjeff/chlog/tree/main/.github/screenshot.png)](https://github.com/ydcjeff/chlog/blob/main/.github/screenshot.png?raw=true)
+[![demo](https://raw.githubusercontent.com/ydcjeff/chlog/main/.github/screenshot.png)](https://github.com/ydcjeff/chlog/blob/main/.github/screenshot.png?raw=true)
 
 **chlog** can generate the changelog from the conventional commits with a few
 extra commit types. The supported commit types are:
@@ -65,7 +65,7 @@ chlog -p CHANGELOG.md -t v0.3.0 -r 2 --commit-path crates/scope-pkg
 
 CLI:
 
-```sh
+```
   chlog
 
   Description:
