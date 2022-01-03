@@ -47,8 +47,9 @@ pub fn get_commits(from_to: &str, commit_path: &str) -> Vec<String> {
   ])
 }
 
-pub fn get_tags_dates(commit_path: &str, count: usize) -> Vec<String> {
+pub fn get_tags_dates(commit_path: &str, count: &str) -> Vec<String> {
   let format = format!("--format=%ad%S{}", CHLOG_END);
+  let mut tags_dates = vec!["0000-00-00HEAD".to_owned()];
   let mut args = vec![
     "--date=short",
     "--tags",
@@ -58,14 +59,21 @@ pub fn get_tags_dates(commit_path: &str, count: usize) -> Vec<String> {
     commit_path,
   ];
 
-  let number: String;
-  if count != 0 {
+  if count != "0" {
     // -n needs to appear before --no-walk
-    number = (count + 1).to_string();
-    args.splice(0..0, ["-n", &number]);
+    args.splice(0..0, ["-n", count]);
   }
 
-  git_log(&args)
+  let logs = git_log(&args);
+  tags_dates.extend(logs);
+
+  if count == "0" {
+    let first_commit =
+      git(&["rev-list", "HEAD", "--max-parents=0", "--abbrev-commit"]);
+    tags_dates.push(format!("0000-00-00{}", first_commit));
+  }
+
+  tags_dates
 }
 
 pub fn get_remote_url() -> String {

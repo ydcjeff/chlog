@@ -1,3 +1,5 @@
+// Changelog generation and writing.
+
 use std::fs;
 use std::io;
 use std::process;
@@ -10,22 +12,16 @@ pub fn generate(args: (&str, &str, &str, &str)) {
 
   let url = git::get_remote_url();
   let mut releases = String::new();
-  let count: usize = count.parse().unwrap();
   let tags_dates = git::get_tags_dates(commit_path, count);
   let len = tags_dates.len();
 
   for (i, tag_date) in tags_dates.iter().enumerate() {
-    if i == count {
+    if i + 1 == len {
       break;
     }
     let (date, current_tag) = tag_date.split_at(10); // split YYYY-MM-DD date format
-    let mut from_to = current_tag.to_string(); // all commits
-
-    // commits between 2 tags
-    if i + 1 < len {
-      let prev_tag = tags_dates[i + 1].split_at(10).1;
-      from_to = format!("{from}...{to}", from = prev_tag, to = current_tag);
-    }
+    let prev_tag = tags_dates[i + 1].split_at(10).1;
+    let from_to = format!("{from}...{to}", from = prev_tag, to = current_tag);
 
     releases.push_str(&format!(
       "## [{tag}]({url}/compare/{from_to})\n\n_{date}_\n\n",
