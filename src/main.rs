@@ -18,7 +18,7 @@ fn main() {
     exit(0)
   }
 
-  changelog::generate(utils::parse_args(&args));
+  changelog::generate(utils::parse_args(&args[1..]));
 }
 
 fn show_help() {

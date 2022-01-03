@@ -1,4 +1,5 @@
 use crate::git;
+use std::process::exit;
 
 pub fn indent(s: &str) -> String {
   let mut result = String::new();
@@ -70,7 +71,10 @@ pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str) {
         "--commit-path" => {
           commit_path = args.next().unwrap();
         }
-        _ => (),
+        _ => {
+          eprintln!("Unknown option: {}\nFor more information try --help", v);
+          exit(1);
+        }
       },
       None => break,
     }
