@@ -15,22 +15,10 @@
 > Universal changelog generator using conventional commit+ with monorepo
 > support.
 
-[![demo](https://github.com/ydcjeff/chlog/tree/main/.github/screenshot.png)](https://github.com/ydcjeff/chlog/tree/main/.github/screenshot.png?raw)
+[![demo](https://github.com/ydcjeff/chlog/tree/main/.github/screenshot.png)](https://github.com/ydcjeff/chlog/blob/main/.github/screenshot.png?raw=true)
 
-## Installation
-
-Binary releases can be downloaded at
-[GitHub release page](https://github.com/ydcjeff/chlog/releases/latest) or if
-you want to install with `cargo`:
-
-```sh
-cargo install chlog
-```
-
-## Features
-
-Chlog can generate the changelog from the conventional commits with a few extra
-commit types. The supported commit types are:
+**chlog** can generate the changelog from the conventional commits with a few
+extra commit types. The supported commit types are:
 
 - `fix` -> Bug Fixes
 - `deps` -> Dependency Updates
@@ -42,9 +30,19 @@ commit types. The supported commit types are:
 - `perf` -> Performance Improvements
 - `refactor` -> Refactoring
 
+## Installation
+
+Binary releases can be downloaded at
+[GitHub release page](https://github.com/ydcjeff/chlog/releases/latest) or if
+you want to install with `cargo`:
+
+```sh
+cargo install chlog
+```
+
 ## Usage
 
-Chlog has command line options for generating and prepending changelogs.
+**chlog** has command line options for generating and prepending changelogs.
 
 For the first release, you can run with:
 
@@ -101,7 +99,12 @@ CLI:
 
 ## Contribution
 
-See [Contributing Guide](./CONTRIBUTING.md).
+- Make sure you have installed [Rust](https://www.rust-lang.org/tools/install).
+- Setup git hook
+
+  ```sh
+  git config core.hookspath .githooks
+  ```
 
 ## LICENSE
 
