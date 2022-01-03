@@ -1,6 +1,5 @@
 use std::fs;
 use std::io;
-use std::path::PathBuf;
 use std::process;
 
 use crate::git;
@@ -129,21 +128,21 @@ fn stringify_commits(commits: Vec<String>, url: &str) -> String {
 
 fn write(prepend: &str, output: &str, to_write: &str) -> io::Result<()> {
   let placeholder = "<!-- CHLOG_SPLIT_MARKER -->\n";
-  let path: PathBuf;
+  let path;
   let contents: String;
 
   if !output.is_empty() {
-    path = fs::canonicalize(output)?;
+    path = output;
     contents = placeholder.to_owned() + to_write;
-    print!("Generating changelog to {:?}...", path);
+    println!("Generating changelog to {:?}...", path);
   } else if !prepend.is_empty() {
-    path = fs::canonicalize(prepend)?;
-    let content = fs::read_to_string(path.clone())?;
+    path = prepend;
+    let content = fs::read_to_string(prepend)?;
     let content: Vec<&str> = content.splitn(2, placeholder).collect();
     contents = content[0].to_owned() + placeholder + to_write + content[1];
-    print!("Generating changelog and prepending to {:?}...", prepend);
+    println!("Generating changelog and prepending to {:?}...", path);
   } else {
-    print!("{}", to_write);
+    println!("{}", to_write);
     return Ok(());
   }
 
