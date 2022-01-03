@@ -26,10 +26,12 @@ jobs:
             name: chlog
             ext: tar.gz
           - os: macos-latest
+            toolchain: stable
             target: x86_64-apple-darwin
             name: chlog
             ext: tar.gz
           - os: macos-latest
+            toolchain: stable
             target: aarch64-apple-darwin
             name: chlog
             ext: tar.gz
@@ -61,10 +63,11 @@ jobs:
       - name: Create archive
         shell: bash
         run: |
+          cp target/${{ matrix.target }}/release/${{ matrix.name }} ${{ matrix.name }}
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            tar.exe -a -c -f chlog-${{ matrix.target }}.${{ matrix.ext }} target/${{ matrix.target }}/release/${{ matrix.name }}
+            tar.exe -a -c -f chlog-${{ matrix.target }}.${{ matrix.ext }} ${{ matrix.name }}
           else
-            tar -czvf chlog-${{ matrix.target }}.${{ matrix.ext }} target/${{ matrix.target }}/release/${{ matrix.name }}
+            tar -czvf chlog-${{ matrix.target }}.${{ matrix.ext }} ${{ matrix.name }}
           fi
 
       - uses: softprops/action-gh-release@v1
@@ -87,7 +90,3 @@ jobs:
           matrix.toolchain == 'stable' &&
           matrix.os == 'ubuntu-latest'
         run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
-
-      - uses: actions/upload-artifact@v2
-        with:
-          path: chlog-${{ matrix.target }}.${{ matrix.ext }}
