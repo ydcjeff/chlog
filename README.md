@@ -30,6 +30,9 @@ extra commit types. The supported commit types are:
 - `perf` -> Performance Improvements
 - `refactor` -> Refactoring
 
+If there is `!` after the commit types or commit scope, those commits will be
+under BREAKING CHANGES section.
+
 ## Installation
 
 Binary releases can be downloaded at

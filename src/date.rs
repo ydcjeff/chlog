@@ -15,7 +15,7 @@ fn timestep_to_utc(ts: i64) -> String {
   let mut year = 1970;
   let mut month = 0;
   // seconds in a day
-  // + 1 here since ts is a difference
+  // + 1 here since ts is a difference and does not consider today date
   let mut day = ts / 86400 + 1;
 
   loop {
