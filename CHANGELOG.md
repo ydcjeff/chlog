@@ -2,6 +2,10 @@
 
 <!-- CHLOG_SPLIT_MARKER -->
 
+## [v0.2.2](https://github.com/ydcjeff/chlog/compare/v0.2.1...v0.2.2)
+
+_2022-01-03_
+
 ## [v0.2.1](https://github.com/ydcjeff/chlog/compare/v0.2.0...v0.2.1)
 
 _2022-01-03_
