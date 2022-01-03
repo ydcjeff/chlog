@@ -3,6 +3,8 @@
 use std::process::{exit, Command, Stdio};
 use std::str;
 
+use crate::date;
+
 const CHLOG_END: &str = "_____CHLOG_END____";
 pub const CHLOG_MID: &str = "_____CHLOG_MID_____";
 
@@ -49,7 +51,7 @@ pub fn get_commits(from_to: &str, commit_path: &str) -> Vec<String> {
 
 pub fn get_tags_dates(commit_path: &str, count: &str) -> Vec<String> {
   let format = format!("--format=%ad%S{}", CHLOG_END);
-  let mut tags_dates = vec!["0000-00-00HEAD".to_owned()];
+  let mut tags_dates = vec![format!("{}HEAD", date::today())];
   let mut args = vec![
     "--date=short",
     "--tags",

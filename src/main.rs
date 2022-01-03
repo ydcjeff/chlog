@@ -2,6 +2,7 @@ use std::env;
 use std::process::exit;
 
 mod changelog;
+mod date;
 mod git;
 mod utils;
 
