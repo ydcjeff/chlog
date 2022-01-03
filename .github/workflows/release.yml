@@ -1,19 +1,15 @@
-name: ci
+name: release
 
 on:
   push:
-    branches: [main]
-  pull_request:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
-  cancel-in-progress: true
+    tags:
+      - "v*"
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  test:
+  binary-crates:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -51,8 +47,28 @@ jobs:
           cargo --version
           rustup --version
 
-      - run: cargo check --release
-      - run: cargo clippy --release -- -D warnings
       - run: cargo b --release --target ${{ matrix.target }}
-      - run: cargo t --release
-      - run: cargo fmt -- --check
+      - name: Create archive
+        shell: bash
+        run: |
+          cp target/${{ matrix.target }}/release/${{ matrix.name }} ${{ matrix.name }}
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            tar.exe -a -c -f chlog-${{ matrix.target }}.${{ matrix.ext }} ${{ matrix.name }}
+          else
+            tar -czvf chlog-${{ matrix.target }}.${{ matrix.ext }} ${{ matrix.name }}
+          fi
+
+      - uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: false
+          fail_on_unmatched_files: false
+          body:
+            Please refer to
+            [CHANGELOG.md](https://github.com/ydcjeff/chlog/blob/main/CHANGELOG.md)
+            for details.
+          files: |
+            chlog-${{ matrix.target }}.${{ matrix.ext }}
+
+      - name: Publish to crates.io
+        if: matrix.os == 'ubuntu-latest'
+        run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
