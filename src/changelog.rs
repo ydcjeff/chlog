@@ -26,6 +26,7 @@ pub fn generate(args: (&str, &str, &str, &str)) {
       format!("{from}...{to}", from = prev_tag, to = current_tag);
 
     let mut commits = git::get_commits(&from_to, commit_path);
+    println!("{:?}", commits);
     commits.sort_unstable();
 
     // Next release tag name, only apply to HEAD
