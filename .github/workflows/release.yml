@@ -62,8 +62,7 @@ jobs:
         with:
           generate_release_notes: false
           fail_on_unmatched_files: false
-          body:
-            Please refer to
+          body: Please refer to
             [CHANGELOG.md](https://github.com/ydcjeff/chlog/blob/main/CHANGELOG.md)
             for details.
           files: |

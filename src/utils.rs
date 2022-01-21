@@ -47,8 +47,7 @@ pub fn process_commit(commit: &str) -> (&str, &str, &str, &str, &str) {
   )
 }
 
-pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str, &str) {
-  let mut prepend = "";
+pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str) {
   let mut output = "";
   let mut count = "1";
   let mut commit_path = ".";
@@ -60,9 +59,6 @@ pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str, &str) {
     let next = args.next();
     match next {
       Some(v) => match v.as_str() {
-        "-p" => {
-          prepend = args.next().unwrap();
-        }
         "-o" => {
           output = args.next().unwrap();
         }
@@ -84,7 +80,7 @@ pub fn parse_args(args: &[String]) -> (&str, &str, &str, &str, &str) {
     }
   }
 
-  (prepend, output, count, commit_path, tag)
+  (output, count, commit_path, tag)
 }
 
 #[cfg(test)]
@@ -176,45 +172,16 @@ List items
 
   #[test]
   fn test_parse_args() {
-    let args = ["-p", "prepend.md", "-o", "output.md"].map(String::from);
-    assert_eq!(parse_args(&args), ("prepend.md", "output.md", "1", ".", ""));
+    let args = ["-o", "output.md"].map(String::from);
+    assert_eq!(parse_args(&args), ("output.md", "1", ".", ""));
 
-    let args =
-      ["-p", "prepend.md", "-o", "output.md", "-r", "2"].map(String::from);
-    assert_eq!(parse_args(&args), ("prepend.md", "output.md", "2", ".", ""));
+    let args = ["-o", "output.md", "-r", "2"].map(String::from);
+    assert_eq!(parse_args(&args), ("output.md", "2", ".", ""));
 
-    let args = [
-      "-p",
-      "prepend.md",
-      "-o",
-      "output.md",
-      "-r",
-      "2",
-      "--commit-path",
-      "test",
-    ]
-    .map(String::from);
-    assert_eq!(
-      parse_args(&args),
-      ("prepend.md", "output.md", "2", "test", "")
-    );
+    let args = [ "-o", "output.md", "-r", "2", "--commit-path", "test"].map(String::from);
+    assert_eq!(parse_args(&args), ("output.md", "2", "test", ""));
 
-    let args = [
-      "-p",
-      "prepend.md",
-      "-o",
-      "output.md",
-      "-r",
-      "2",
-      "--commit-path",
-      "test",
-      "-t",
-      "v1.0.0",
-    ]
-    .map(String::from);
-    assert_eq!(
-      parse_args(&args),
-      ("prepend.md", "output.md", "2", "test", "v1.0.0")
-    );
+    let args = ["-o","output.md","-r","2","--commit-path","test","-t","v1.0.0"].map(String::from);
+    assert_eq!(parse_args(&args), ("output.md", "2", "test", "v1.0.0"));
   }
 }
