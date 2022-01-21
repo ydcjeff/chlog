@@ -60,5 +60,5 @@ fn show_help() {
 }
 
 fn show_version() {
-  println!("chlog 0.2.5");
+  println!("chlog 0.3.0");
 }

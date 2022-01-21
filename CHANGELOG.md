@@ -2,6 +2,20 @@
 
 <!-- CHLOG_SPLIT_MARKER -->
 
+## [v0.3.0](https://github.com/ydcjeff/chlog/compare/v0.2.5...v0.3.0)
+
+_2022-01-21_
+
+### BREAKING CHANGES
+
+- [`e3340d8`](https://github.com/ydcjeff/chlog/commit/e3340d8) changelog writing
+  is now unified under single -o option (#7)
+
+  `-p` is now removed. Instead use `-o` as usual. It will create
+  the output file if the file does not exist and write the changelog
+  to it. If the file exists, the generated changelog will be
+  prepended to the file.
+
 ## [v0.2.5](https://github.com/ydcjeff/chlog/compare/v0.2.4...v0.2.5)
 
 _2022-01-03_
