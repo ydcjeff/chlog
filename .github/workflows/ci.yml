@@ -127,7 +127,7 @@ jobs:
       - name: Test changelog
         working-directory: ./.e2e_test
         run: |
-          git log --format="%s-%h" -- .
+          git log --format="%s-%h"
           chlog -o output.md -r 0 -t v0.5.0
           cat output.md
-          diff output.md ../chlog/.github/fixtures/expected.md
+          diff output.md .github/fixtures/expected.md
