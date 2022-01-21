@@ -90,7 +90,7 @@ jobs:
 
       - name: Create commits and tags
         run: |
-          cd ../ && mkdir e2e_test && cd e2e_test && git init && git remote add origin https://github.com/ydcjeff/chlog
+          mkdir .e2e_test && cd .e2e_test && git init && git remote add origin https://github.com/ydcjeff/chlog
           echo "deprecate!: deprecating something breaking\n\ndetail breaking changes here, can be long explanation" > long_commit_breaking.txt
           echo "deprecate(scope)!: scope deprecating something breaking\n\ndetail breaking changes here, can be long explanation" > long_commit_breaking_scope.txt
           echo "perf: improving something speeds\n\ndetail speedups changes here, can be long explanation" > long_commit_normal.txt
@@ -125,7 +125,7 @@ jobs:
           git tag v0.5.0
 
       - name: Test changelog
-        working-directory: ../e2e_test
+        working-directory: ./.e2e_test
         run: |
           git log --format="%s-%h" -- .
           chlog -o output.md -r 0 -t v0.5.0
