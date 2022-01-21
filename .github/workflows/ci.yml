@@ -62,6 +62,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          depth: 0
 
       - name: Set git config
         run: |
@@ -127,7 +129,6 @@ jobs:
       - name: Test changelog
         working-directory: ./.e2e_test
         run: |
-          git log --format="%s-%h"
           chlog -o output.md -r 0 -t v0.5.0
           cat output.md
-          diff output.md .github/fixtures/expected.md
+          diff output.md ../.github/fixtures/expected.md
