@@ -125,7 +125,7 @@ jobs:
           git tag v0.5.0
 
       - name: Test changelog
-        working-directory: ~/e2e_test
+        working-directory: ../e2e_test
         run: |
           chlog -o output.md -r 0 -t v0.5.0
           cat output.md
