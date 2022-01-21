@@ -107,7 +107,7 @@ jobs:
       - name: Install rustup
         run: |
           rustup set profile default
-          rustup toolchain install stable --target ${{ matrix.target }}
+          rustup toolchain install stable
           rustup update
           rustup default stable
 
