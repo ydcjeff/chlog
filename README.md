@@ -56,19 +56,19 @@ chlog -o CHANGELOG.md -r 0 -t v0.1.0
 For the subsequent release,
 
 ```sh
-chlog -p CHANGELOG.md -t v0.2.0
+chlog -o CHANGELOG.md -t v0.2.0
 ```
 
 For the packages with monorepo, you can use `commit-path` option. It will
 generate the changelog scoped to that package.
 
 ```sh
-chlog -p CHANGELOG.md -t v0.3.0 -r 2 --commit-path crates/scope-pkg
+chlog -o CHANGELOG.md -t v0.3.0 -r 2 --commit-path crates/scope-crate
 ```
 
 CLI:
 
-```
+```console
   chlog
 
   Description:
@@ -80,17 +80,18 @@ CLI:
 
   Example:
     $ chlog -o CHANGELOG.md -t v1.0.0
-    $ chlog -p CHANGELOG.md -t v1.0.0
-    $ chlog -p CHANGELOG.md -t v1.0.0 -r 2
-    $ chlog -p CHANGELOG.md -t v1.0.0 -r 2 --commit-path crates/scope-pkg
+    $ chlog -o CHANGELOG.md -t v1.0.0
+    $ chlog -o CHANGELOG.md -t v1.0.0 -r 2
+    $ chlog -o CHANGELOG.md -t v1.0.0 -r 2 --commit-path crates/scope-crate
 
   Options:
     -t  <string>          Tag name for the next release
     -r  <number>          Number of releases to generate the changelog
                           If 0, the whole changelog will be generated
-                          (i.e. first release)
+                          (i.e. first release) (default: 1)
     -o  <file>            File to write the generated changelog
-    -p  <file>            File to prepend the generated changelog
+                          It will prepend the changelogs if the file exists
+                          otherwise, will create a new one
     --commit-path <path>  Generate a changelog scoped to a specific directory
 
   Flags:

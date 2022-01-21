@@ -2,13 +2,14 @@
 
 use std::fs;
 use std::io;
+use std::path::Path;
 use std::process;
 
 use crate::git;
 use crate::utils;
 
-pub fn generate(args: (&str, &str, &str, &str, &str)) {
-  let (prepend, output, count, commit_path, tag) = args;
+pub fn generate(args: (&str, &str, &str, &str)) {
+  let (output, count, commit_path, tag) = args;
 
   let url = git::get_remote_url();
   let mut releases = String::new();
@@ -49,7 +50,7 @@ pub fn generate(args: (&str, &str, &str, &str, &str)) {
     }
   }
 
-  match write(prepend, output, &releases) {
+  match write(output, &releases) {
     Ok(_) => (),
     Err(e) => {
       eprintln!("{}", e);
@@ -129,21 +130,23 @@ fn stringify_commits(commits: Vec<String>, url: &str) -> String {
   commits_list
 }
 
-fn write(prepend: &str, output: &str, to_write: &str) -> io::Result<()> {
+fn write(output: &str, to_write: &str) -> io::Result<()> {
   let placeholder = "<!-- CHLOG_SPLIT_MARKER -->\n";
   let path;
   let contents: String;
 
   if !output.is_empty() {
-    path = output;
-    contents = placeholder.to_owned() + to_write;
-    println!("Generating changelog to {:?}...", path);
-  } else if !prepend.is_empty() {
-    path = prepend;
-    let content = fs::read_to_string(prepend)?;
-    let content: Vec<&str> = content.splitn(2, placeholder).collect();
-    contents = content[0].to_owned() + placeholder + to_write + content[1];
-    println!("Generating changelog and prepending to {:?}...", path);
+    if Path::new(output).exists() {
+      path = output;
+      let content = fs::read_to_string(output)?;
+      let content: Vec<&str> = content.splitn(2, placeholder).collect();
+      contents = content[0].to_owned() + placeholder + to_write + content[1];
+      println!("Generating changelog and prepending to {:?}...", path);
+    } else {
+      path = output;
+      contents = placeholder.to_owned() + to_write;
+      println!("Generating changelog to {:?}...", path);
+    }
   } else {
     println!("{}", to_write);
     return Ok(());
