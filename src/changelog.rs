@@ -2,8 +2,8 @@
 
 use std::fs;
 use std::io;
-use std::process;
 use std::path::Path;
+use std::process;
 
 use crate::git;
 use crate::utils;

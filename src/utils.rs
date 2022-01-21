@@ -178,10 +178,21 @@ List items
     let args = ["-o", "output.md", "-r", "2"].map(String::from);
     assert_eq!(parse_args(&args), ("output.md", "2", ".", ""));
 
-    let args = [ "-o", "output.md", "-r", "2", "--commit-path", "test"].map(String::from);
+    let args =
+      ["-o", "output.md", "-r", "2", "--commit-path", "test"].map(String::from);
     assert_eq!(parse_args(&args), ("output.md", "2", "test", ""));
 
-    let args = ["-o","output.md","-r","2","--commit-path","test","-t","v1.0.0"].map(String::from);
+    let args = [
+      "-o",
+      "output.md",
+      "-r",
+      "2",
+      "--commit-path",
+      "test",
+      "-t",
+      "v1.0.0",
+    ]
+    .map(String::from);
     assert_eq!(parse_args(&args), ("output.md", "2", "test", "v1.0.0"));
   }
 }
