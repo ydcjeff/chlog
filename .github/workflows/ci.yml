@@ -123,20 +123,10 @@ jobs:
           git commit --allow-empty --file long_commit_normal.txt --date "2022-01-21 01:01:01"
           git commit --allow-empty --file long_commit_normal_scope.txt --date "2022-01-22 01:01:01"
           git tag v0.5.0
-          mkdir subdir && echo "console.log('hello')" > subdir/hello.js
-          git add subdir/hello.js && git commit -m "feat: commit-path is working" --date "2022-01-23 01:01:01"
-          cd subdir && git tag subdir@0.1.0
 
-      - name: Test changelog from the root directory
+      - name: Test changelog
         run: |
           cd ../e2e_test
           chlog -o output.md -r 0 -t v0.5.0
-          cat output.md
-          diff output.md ../chlog/.github/fixtures/expected.md
-
-      - name: Test changelog from the specific directory
-        run: |
-          cd e2e_test
-          chlog -o output.md -r 0 -t v0.5.0 --commit-path subdir
           cat output.md
           diff output.md ../chlog/.github/fixtures/expected.md
