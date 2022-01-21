@@ -124,13 +124,13 @@ jobs:
       - run: chlog -V
       - run: chlog --version
 
+      - name: Test changelog from the specific directory
+        run: |
+          chlog -o output.md -r 0 -t v0.5.0 --commit-path e2e_test
+          diff output.md .github/fixtures/expected.md
+
       - name: Test changelog from the root directory
         run: |
           cd e2e_test
           chlog -o output.md -r 0 -t v0.5.0
           diff output.md ../.github/fixtures/expected.md
-
-      - name: Test changelog from the specific directory
-        run: |
-          chlog -o output.md -r 0 -t v0.5.0 --commit-path e2e_test
-          diff output.md .github/fixtures/expected.md
