@@ -71,7 +71,7 @@ jobs:
 
       - name: Create commits and tags
         run: |
-          mkdir e2e_test && cd e2e_test && git init
+          mkdir e2e_test && cd e2e_test && git init && git remote add origin https://github.com/ydcjeff/chlog
           echo "deprecate!: deprecating something breaking\n\ndetail breaking changes here, can be long explanation" > long_commit_breaking.txt
           echo "deprecate(scope)!: scope deprecating something breaking\n\ndetail breaking changes here, can be long explanation" > long_commit_breaking_scope.txt
           echo "perf: improving something speeds\n\ndetail speedups changes here, can be long explanation" > long_commit_normal.txt
